@@ -1,4 +1,4 @@
-package hius;
+package gateway;
 
 public class Instrument {
     
