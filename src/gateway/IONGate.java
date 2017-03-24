@@ -1,12 +1,13 @@
 package gateway;
 
+import java.io.*;
 import java.sql.*;
 import java.util.*;
 
 public class IONGate {
 
 private String defPath = "M:\\Risks\\PrimeBrokerage\\Derivatives\\Archive\\";
-private String lastFolder;
+private File[] foldersToProcess;
 private Calendar timestamp;
 private Connection cnxLondon, cnxRisk;
 private int logID;
@@ -27,6 +28,17 @@ public IONGate() {
     }
 }
 
+public boolean GetFolders() {
+    boolean r = true;
+    File stDirectory = new File(defPath);
+    File[] statements = stDirectory.listFiles();
+    for (File st : statements) System.out.println(st.getName());
+    String qu = "SELECT neolog_folder FROM neolog " +
+           "WHERE neolog_class = 'IONGate' ORDER BY neolog_stamp";
+    return r;
+}
+
+
 public boolean GetLogID() {
     boolean r = true;
     String qu;
@@ -43,6 +55,7 @@ public boolean GetLogID() {
         System.out.println("LogID = " + logID);
         rs.close();
         st.close();
+        this.GetFolders();
     } catch (SQLException e) {
         System.out.println(e.getMessage());
         r = false;
